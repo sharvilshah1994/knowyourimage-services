@@ -24,7 +24,7 @@ public class ImageController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public Image uploadimage(@RequestBody(required = false) @Valid Image image, @RequestPart(value = "file", required = false) MultipartFile file) {
-        String url = imageService.uploadImage(image);
+        String url = imageService.uploadImage(image, file);
         return null;
     }
 
