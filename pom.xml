@@ -3,13 +3,13 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.quizmeapi</groupId>
-	<artifactId>adaptiveweb</artifactId>
+	<groupId>com.cloudprojectone</groupId>
+	<artifactId>imagerecognition</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>adaptiveweb</name>
-	<description>Quiz me web services</description>
+	<name>imagerecognition</name>
+	<description>Image recognition </description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
