@@ -1,0 +1,5 @@
+amazonProperties:
+  endpointUrl: https://s3.us-east-2.amazonaws.com
+  accessKey: AKIAIBPIKAD2KT7ZOY7A
+  secretKey: 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
+  bucketName: imageprojectcloud

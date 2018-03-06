@@ -15,6 +15,7 @@ public class Image {
     private long id;
     @NotNull
     private String url;
+    private String identifiedImage;
     @CreationTimestamp
     private Timestamp timestamp;
 
@@ -40,5 +41,13 @@ public class Image {
 
     public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getIdentifiedImage() {
+        return identifiedImage;
+    }
+
+    public void setIdentifiedImage(String identifiedImage) {
+        this.identifiedImage = identifiedImage;
     }
 }
