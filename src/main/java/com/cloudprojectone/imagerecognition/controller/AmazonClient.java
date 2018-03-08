@@ -47,8 +47,8 @@ public class AmazonClient {
         String fileUrl;
         try {
             String idenImage = image.getIdentifiedImage();
-            idenImage = idenImage.substring(0, idenImage.indexOf("(")).trim();
-            String fileName = image.getId() + "_" + idenImage;
+            idenImage = idenImage.substring(0, idenImage.indexOf('(')).trim();
+            String fileName = image.getId() + "_" + idenImage + ".png";
             File convFile = new File(fileName);
             ImageIO.write(multipartFile, "PNG", convFile);
             fileUrl = endpointUrl + "/" + bucketName + "/" + fileName;
