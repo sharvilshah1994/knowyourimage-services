@@ -1,5 +1,6 @@
 package com.cloudprojectone.imagerecognition.controller;
 
+import com.cloudprojectone.imagerecognition.listeners.SQSListener;
 import com.cloudprojectone.imagerecognition.model.Image;
 import com.cloudprojectone.imagerecognition.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,12 @@ public class ImageController {
         BufferedImage bufferedImage = ImageIO.read(url);
         amazonClient.uploadFile(bufferedImage, imageAns);
         return imageAns;
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    @ResponseBody
+    public Boolean isServerBusy() {
+        return SQSListener.SERVER_BUSY;
     }
 
     private void runPythonFile(Image imageAns) throws IOException {
