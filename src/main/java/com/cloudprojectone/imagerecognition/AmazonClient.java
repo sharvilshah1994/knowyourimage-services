@@ -47,17 +47,14 @@ public class AmazonClient {
                 .withCannedAcl(CannedAccessControlList.PublicRead));
     }
 
-    public void uploadFile(java.awt.image.BufferedImage multipartFile, Image image) {
+    public void uploadFile(java.awt.image.BufferedImage multipartFile, String image, String id) {
 
-        String fileUrl;
         try {
-            String idenImage = image.getIdentifiedImage();
+            String idenImage = image;
             idenImage = idenImage.substring(0, idenImage.indexOf('(')).trim();
-            String fileName = image.getId() + "_" + idenImage + ".png";
+            String fileName = id + "_" + idenImage + ".png";
             File convFile = new File(fileName);
             ImageIO.write(multipartFile, "PNG", convFile);
-            fileUrl = endpointUrl + "/" + bucketName + "/" + fileName;
-            image.setUrl(fileUrl);
             uploadFileTos3bucket(fileName, convFile);
             convFile.delete();
         } catch (Exception e) {
