@@ -38,7 +38,7 @@ public class ImageController {
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public Boolean isServerBusy() {
-        return false;
+        return !Consumer.reqs.isEmpty();
     }
 
     private String runPythonFile(String imageUrl) throws IOException {
