@@ -1,9 +1,8 @@
-package com.cloudprojectone.imagerecognition.model;
+package com.cloudprojectone.imagerecognition;
 
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
 @Entity
@@ -13,7 +12,6 @@ public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @NotNull
     private String url;
     private String identifiedImage;
     @CreationTimestamp

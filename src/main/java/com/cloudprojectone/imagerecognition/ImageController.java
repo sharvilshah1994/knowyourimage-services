@@ -1,14 +1,10 @@
-package com.cloudprojectone.imagerecognition.controller;
+package com.cloudprojectone.imagerecognition;
 
-import com.cloudprojectone.imagerecognition.listeners.SQSListener;
-import com.cloudprojectone.imagerecognition.model.Image;
-import com.cloudprojectone.imagerecognition.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
-
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -48,7 +44,7 @@ public class ImageController {
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public Boolean isServerBusy() {
-        return SQSListener.SERVER_BUSY;
+        return false;
     }
 
     private void runPythonFile(Image imageAns) throws IOException {

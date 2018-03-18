@@ -1,6 +1,5 @@
-package com.cloudprojectone.imagerecognition.repository;
+package com.cloudprojectone.imagerecognition;
 
-import com.cloudprojectone.imagerecognition.model.Image;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

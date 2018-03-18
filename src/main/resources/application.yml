@@ -1,9 +1,0 @@
-amazonProperties:
-  endpointUrl: https://s3.us-east-2.amazonaws.com
-  accessKey: AKIAIBPIKAD2KT7ZOY7A
-  secretKey: 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
-  bucketName: imageprojectcloud
-  requestUrl: https://sqs.us-west-1.amazonaws.com/791943463301/imagerecogniton-request
-  requestQueue: imagerecogniton-request
-  responseUrl: https://sqs.us-west-1.amazonaws.com/791943463301/imagerecognition-response
-  responseQueue: imagerecognition-response
