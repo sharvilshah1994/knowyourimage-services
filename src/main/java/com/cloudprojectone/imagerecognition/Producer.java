@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.io.Serializable;
 
@@ -43,7 +42,6 @@ public class Producer {
 
     }
 
-    @PostConstruct
     public void sendMessages(String identifiedImage) {
         sendToQueueA(identifiedImage);
     }
