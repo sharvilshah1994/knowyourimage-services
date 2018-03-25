@@ -12,8 +12,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import javax.imageio.ImageIO;
-import java.io.File;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
 @Service
 public class AmazonClient {
@@ -42,23 +42,10 @@ public class AmazonClient {
         this.s3client.setRegion(Region.getRegion(Regions.fromName(awsRegion)));
     }
 
-    private void uploadFileTos3bucket(String fileName, File file) {
-        s3client.putObject(new PutObjectRequest(bucketName, fileName, file)
+    public void uploadFileTos3bucket(String key, String value) {
+        byte[] bytes = value.getBytes();
+        InputStream valueContent = new ByteArrayInputStream(bytes);
+        s3client.putObject(new PutObjectRequest(bucketName, key, valueContent, null)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
-    }
-
-    public void uploadFile(java.awt.image.BufferedImage multipartFile, String image, String id) {
-
-        try {
-            String idenImage = image;
-            idenImage = idenImage.substring(0, idenImage.indexOf('(')).trim();
-            String fileName = id + "_" + idenImage + ".png";
-            File convFile = new File(fileName);
-            ImageIO.write(multipartFile, "PNG", convFile);
-            uploadFileTos3bucket(fileName, convFile);
-            convFile.delete();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

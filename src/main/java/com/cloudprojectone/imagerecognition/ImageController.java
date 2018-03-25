@@ -4,12 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URL;
 
 @RestController
 @RequestMapping(value = "/cloudimagerecognition", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -29,9 +26,10 @@ public class ImageController {
     @ResponseBody
     public String uploadimage(@RequestParam(value = "input") String imageUrl, String id) throws IOException {
         String identifiedImage = runPythonFile(imageUrl);
-        URL url = new URL(imageUrl);
-        BufferedImage bufferedImage = ImageIO.read(url);
-        amazonClient.uploadFile(bufferedImage, identifiedImage, id);
+        String[] imageUrlArr = imageUrl.split("/");
+        String imageName = imageUrlArr[imageUrlArr.length-1];
+        String key = id + "_" + imageName;
+        amazonClient.uploadFileTos3bucket(key, identifiedImage);
         return identifiedImage;
     }
 
