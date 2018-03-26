@@ -64,7 +64,8 @@ public class ImageController {
         String[] activateTensorFlow = new String[]{"/bin/bash",
                 "-c", "source ~/tensorflow/bin/activate && " + pythonCommand};
         System.out.println("Command: " + Arrays.toString(activateTensorFlow));
-        Process p = Runtime.getRuntime().exec(activateTensorFlow);
+        Process p = new ProcessBuilder("/bin/bash", "-c",
+                "source /home/ubuntu/tensorflow/bin/activate &&" + pythonCommand).start();
         BufferedReader stdInput = new BufferedReader(new
                 InputStreamReader(p.getInputStream()));
         imageRecognized = stdInput.readLine();
