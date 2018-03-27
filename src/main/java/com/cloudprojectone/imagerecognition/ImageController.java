@@ -37,7 +37,7 @@ public class ImageController {
         String identifiedImage;
         String[] imageUrlArr = imageUrl.split("/");
         String imageName = imageUrlArr[imageUrlArr.length-1];
-        if (cache.contains(imageName)) {
+        if (cache.containsKey(imageName)) {
             identifiedImage = cache.get(imageName);
             amazonClient.uploadFileTos3bucket(imageName, identifiedImage);
             return identifiedImage;
