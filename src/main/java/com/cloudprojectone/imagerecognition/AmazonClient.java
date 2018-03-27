@@ -32,20 +32,20 @@ public class AmazonClient {
     @Value("${amazonProperties.secretKey}")
     private String secretKey;
 
-    @Value("${amazonProperties.region}")
-    private String awsRegion;
+        @Value("${amazonProperties.region}")
+        private String awsRegion;
 
-    @PostConstruct
-    private void initializeAmazon() {
-        AWSCredentials credentials = new BasicAWSCredentials(this.accessKey, this.secretKey);
-        this.s3client = new AmazonS3Client(credentials);
-        this.s3client.setRegion(Region.getRegion(Regions.fromName(awsRegion)));
-    }
+        @PostConstruct
+        private void initializeAmazon() {
+            AWSCredentials credentials = new BasicAWSCredentials(this.accessKey, this.secretKey);
+            this.s3client = new AmazonS3Client(credentials);
+            this.s3client.setRegion(Region.getRegion(Regions.fromName(awsRegion)));
+        }
 
-    public void uploadFileTos3bucket(String key, String value) {
-        byte[] bytes = value.getBytes();
-        InputStream valueContent = new ByteArrayInputStream(bytes);
-        s3client.putObject(new PutObjectRequest(bucketName, key, valueContent, null)
-                .withCannedAcl(CannedAccessControlList.PublicRead));
-    }
+        public void uploadFileTos3bucket(String key, String value) {
+            byte[] bytes = value.getBytes();
+            InputStream valueContent = new ByteArrayInputStream(bytes);
+            s3client.putObject(new PutObjectRequest(bucketName, key, valueContent, null)
+                    .withCannedAcl(CannedAccessControlList.PublicRead));
+        }
 }

@@ -27,7 +27,7 @@ public class Consumer {
         reqs.add(msg);
         String url = msg.split("__")[1];
         String id = msg.split("__")[0];
-        String idenImage = imageController.uploadimage(url, id);
+        String idenImage = imageController.uploadimage(url);
         String responseMessage = id + "__" + idenImage;
         producer.sendMessages(responseMessage);
         reqs.remove(msg);

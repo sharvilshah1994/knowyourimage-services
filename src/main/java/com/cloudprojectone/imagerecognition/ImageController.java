@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "/cloudimagerecognition", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -20,6 +20,12 @@ public class ImageController {
 
     private static boolean isPythonScriptBusy = false;
 
+    private static Hashtable<String, String> cache = new Hashtable<>();
+
+    private static Hashtable<String, Integer> imageFrequencyMap = new Hashtable<>();
+
+    private static final Integer CACHE_CAPACITY = 10;
+
     @Autowired
     public ImageController(AmazonClient amazonClient) {
         this.amazonClient = amazonClient;
@@ -27,8 +33,15 @@ public class ImageController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public String uploadimage(@RequestParam(value = "input") String imageUrl, String id) throws IOException {
+    public String uploadimage(@RequestParam(value = "input") String imageUrl) throws IOException {
         String identifiedImage;
+        String[] imageUrlArr = imageUrl.split("/");
+        String imageName = imageUrlArr[imageUrlArr.length-1];
+        if (cache.contains(imageName)) {
+            identifiedImage = cache.get(imageName);
+            amazonClient.uploadFileTos3bucket(imageName, identifiedImage);
+            return identifiedImage;
+        }
         if (!isPythonScriptBusy) {
             identifiedImage = runPythonFile(imageUrl);
         } else {
@@ -39,15 +52,37 @@ public class ImageController {
             }
             identifiedImage = runPythonFile(imageUrl);
         }
+        putToCache(imageName, identifiedImage);
         isPythonScriptBusy = false;
         if (identifiedImage == null) {
             identifiedImage = "Python File ERROR!";
         }
-        String[] imageUrlArr = imageUrl.split("/");
-        String imageName = imageUrlArr[imageUrlArr.length-1];
-        String key = id + "_" + imageName;
-        amazonClient.uploadFileTos3bucket(key, identifiedImage);
+        amazonClient.uploadFileTos3bucket(imageName, identifiedImage);
         return identifiedImage;
+    }
+
+    private void putToCache(String imageName, String identifiedImage) {
+        if (cache.size() > CACHE_CAPACITY) {
+            String leastUsedKey = getLeastUsedKey();
+            if (leastUsedKey != null) {
+                cache.remove(leastUsedKey);
+                imageFrequencyMap.remove(leastUsedKey);
+            } else {
+                Map.Entry<String, String> entry = cache.entrySet().iterator().next();
+                cache.remove(entry.getKey());
+                imageFrequencyMap.remove(entry.getKey());
+            }
+        }
+        putToMap(imageName, identifiedImage);
+    }
+
+    private void putToMap(String imageName, String identifiedImage) {
+        cache.put(imageName, identifiedImage);
+        if (imageFrequencyMap.contains(imageName)) {
+            imageFrequencyMap.put(imageName, imageFrequencyMap.get(imageName) + 1);
+        } else {
+            imageFrequencyMap.put(imageName, 1);
+        }
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -73,4 +108,14 @@ public class ImageController {
         return imageRecognized;
     }
 
+    private String getLeastUsedKey() {
+        Iterator it = (Iterator) imageFrequencyMap.keySet();
+        while (it.hasNext()) {
+            String key = (String) it.next();
+            if (imageFrequencyMap.get(key).equals(Collections.min(imageFrequencyMap.values()))) {
+                return key;
+            }
+        }
+        return null;
+    }
 }
