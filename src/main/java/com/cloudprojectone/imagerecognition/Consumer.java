@@ -24,6 +24,7 @@ public class Consumer {
 
     @JmsListener(destination = "${amazonProperties.requestQueue}")
     public void processMessage(String msg) throws IOException {
+        System.out.println("Response rcvd:" +msg);
         reqs.add(msg);
         String url = msg.split("__")[1];
         String id = msg.split("__")[0];
