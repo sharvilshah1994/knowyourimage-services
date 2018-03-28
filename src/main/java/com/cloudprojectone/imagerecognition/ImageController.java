@@ -28,7 +28,7 @@ public class ImageController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public String uploadimage(@RequestParam(value = "input") String imageUrl) throws IOException {
-        String identifiedImage = "abc";
+        String identifiedImage;
         String[] imageUrlArr = imageUrl.split("/");
         String imageName = imageUrlArr[imageUrlArr.length-1];
         if (!isPythonScriptBusy) {
