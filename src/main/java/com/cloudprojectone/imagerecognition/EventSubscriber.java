@@ -48,7 +48,7 @@ class EventSubscriber {
         this.imageController = imageController;
     }
 
-    @Scheduled(fixedRate = 6000)
+    @Scheduled(fixedRate = 2500)
     public void shutDown() {
         AWSCredentials credentials = new BasicAWSCredentials(this.accessKey, this.secretKey);
         AmazonEC2Client amazonEC2Client = new AmazonEC2Client(credentials);
